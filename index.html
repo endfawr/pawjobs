@@ -767,12 +767,16 @@
 
     // ── CLOCK ──
     const clockEl = document.getElementById('clock');
+    let _spotifyText = null;
+
     function updateClock() {
       const now = new Date();
       const h = String(now.getHours()).padStart(2, '0');
       const m = String(now.getMinutes()).padStart(2, '0');
       const s = String(now.getSeconds()).padStart(2, '0');
-      clockEl.textContent = `pawjobs.me | ${h}:${m}:${s}`;
+      clockEl.textContent = _spotifyText
+        ? `pawjobs.me | ${h}:${m}:${s} | ${_spotifyText}`
+        : `pawjobs.me | ${h}:${m}:${s}`;
     }
     updateClock();
     setInterval(updateClock, 1000);
@@ -797,6 +801,15 @@
 
     function applyPresence(data) {
       presenceCard.style.display = '';
+
+      // spotify watermark
+      if (data.spotify && data.listening_to_spotify) {
+        const song   = data.spotify.song   || '';
+        const artist = data.spotify.artist || '';
+        _spotifyText = artist ? `${song} - ${artist}` : song;
+      } else {
+        _spotifyText = null;
+      }
 
       const user = data.discord_user;
       if (user) {
