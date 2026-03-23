@@ -379,16 +379,7 @@
       display: block;
     }
 
-    .avatar-decoration {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 122%;
-      height: 122%;
-      pointer-events: none;
-      z-index: 2;
-    }
+
 
     .presence-status-dot {
       position: absolute;
@@ -422,35 +413,7 @@
       gap: 0.45rem;
     }
 
-    .clan-tag {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 4px;
-      padding: 0.15rem 0.4rem;
-    }
 
-    .clan-badge {
-      width: 14px;
-      height: 14px;
-      display: flex;
-      align-items: center;
-    }
-
-    .clan-badge svg {
-      width: 14px;
-      height: 14px;
-      display: block;
-    }
-
-    .clan-text {
-      font-size: 0.52rem;
-      font-weight: 500;
-      color: #bbb;
-      letter-spacing: 0.04em;
-    }
 
     .presence-activity {
       display: flex;
@@ -566,16 +529,12 @@
       <div class="presence-row">
         <div class="presence-avatar-wrap">
           <img class="presence-avatar" id="presenceAvatar" src="" alt="discord avatar" />
-          <img class="avatar-decoration" src="decoration.png" alt="" />
           <div class="presence-status-dot" id="presenceDot"></div>
         </div>
         <div class="presence-info">
           <div class="presence-name-row">
             <div class="presence-name" id="presenceName"></div>
-            <div class="clan-tag" id="clanTag" style="display:none">
-              <span class="clan-badge"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_490_248)"><path d="M6 4V10H22V12H19.9999V14H17.9999V16H30V20H28V22H16V28H2V20V8H4V4H6Z" fill="#F6A830"/><path d="M16 16V18H14V22H12V24H6V22H4V20H2V28H16V22H28V20H30V16H16Z" fill="#FFE880"/><path d="M18 24H16V28H18V24Z" fill="#FF1C90"/><path d="M16 4H14V8H16V4Z" fill="#F6A830"/><path d="M10 4V2H6V4H10Z" fill="#F6A830"/><path d="M8 10H12V4H8V10Z" fill="#FF7FC0"/><path d="M16 8H20V4H16V8Z" fill="#FF7FC0"/><path d="M18 24V30H22V24H18Z" fill="#FF7FC0"/><path d="M24 16V18H26V20H30V16H24Z" fill="#705224"/><path d="M18 2H16V4H18V2Z" fill="#F6A830"/><path d="M20 2H18V4H20V2Z" fill="#FF7FC0"/><path d="M24 12H22V14H24V12Z" fill="#F6A830"/><path d="M18 28H2V30H18V28Z" fill="black"/><path d="M2 28V8H0V28H2Z" fill="black"/><path d="M4 4H2V8H4V4Z" fill="black"/><path d="M8 4H6V10H8V4Z" fill="black"/><path d="M22 32V30H18V32H22Z" fill="black"/><path d="M12 18H14V12H12V18Z" fill="black"/><path d="M6 2H4V4H6V2Z" fill="black"/><path d="M16 2H14V4H16V2Z" fill="black"/><path d="M6 10H4V12H6V10Z" fill="black"/><path d="M24 10H22V12H24V10Z" fill="black"/><path d="M28.0001 20V22H16V24H22.0001V30H24.0001V26H26.0001V24H30.0001V20H28.0001Z" fill="black"/><path d="M26.0001 14V12H24.0001V14H22.0001V12H20V14H18V16H30.0001V20H32.0001V14H26.0001Z" fill="black"/><path d="M6 0V2H10V4H12V0H6Z" fill="black"/><path d="M16 0V2H20V8H14V4H12V10H22.0001V0H16Z" fill="black"/></g><defs><clipPath id="clip0_490_248"><rect width="32" height="32" fill="white"/></clipPath></defs></svg></span>
-              <span class="clan-text" id="clanText"></span>
-            </div>
+
           </div>
           <div class="custom-status" id="customStatus" style="display:none">
             <img class="custom-status-emoji" id="customStatusEmoji" src="" alt="" style="display:none" />
@@ -764,8 +723,7 @@
     const customStatus     = document.getElementById('customStatus');
     const customStatusEmoji = document.getElementById('customStatusEmoji');
     const customStatusText  = document.getElementById('customStatusText');
-    const clanTag          = document.getElementById('clanTag');
-    const clanText         = document.getElementById('clanText');
+
     const presenceDtl      = document.getElementById('presenceDetail');
     const presenceStt      = document.getElementById('presenceState');
 
@@ -779,12 +737,6 @@
           : `https://cdn.discordapp.com/embed/avatars/${(BigInt(user.id) >> 22n) % 6n}.png`;
         presenceAvatar.src = avatarUrl;
         presenceName.textContent = user.global_name || user.username || '';
-
-        const clan = user.clan;
-        const CLAN = { badge: 'e701df75ce906698f0d02ce19bf7c8c6', identity_guild_id: '1280988336747581472', tag: 'pup' };
-        const resolvedClan = (clan && clan.identity_enabled && clan.tag) ? clan : CLAN;
-        clanText.textContent = resolvedClan.tag;
-        clanTag.style.display = 'flex';
       }
 
       const customAct = (data.activities || []).find(a => a.type === 4);
