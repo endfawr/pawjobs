@@ -839,11 +839,14 @@
           let img = assets.large_image;
           if (img.startsWith('mp:external/')) {
             img = 'https://media.discordapp.net/external/' + img.slice('mp:external/'.length);
+          } else if (img.startsWith('spotify:')) {
+            img = 'https://i.scdn.co/image/' + img.slice('spotify:'.length);
           } else {
             img = `https://cdn.discordapp.com/app-assets/${activity.application_id}/${img}.png`;
           }
           presenceArt.src = img;
           presenceArt.style.display = '';
+          presenceArt.onerror = () => { presenceArt.style.display = 'none'; };
         } else {
           presenceArt.style.display = 'none';
         }
