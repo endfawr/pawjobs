@@ -7,7 +7,54 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>apollo</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600&display=swap" rel="stylesheet">
+  <script>
+    const _base = 'apollo';
+    const _glitchChars = '!<>-_\\/[]{}—=+*^?#@$%&~';
+    let _glitchTimer = null;
+
+    function glitchText(target, duration, callback) {
+      let start = null;
+      const len = target.length;
+      function step(ts) {
+        if (!start) start = ts;
+        const progress = Math.min((ts - start) / duration, 1);
+        const revealedCount = Math.floor(progress * len);
+        let result = '';
+        for (let i = 0; i < len; i++) {
+          if (i < revealedCount) {
+            result += target[i];
+          } else {
+            result += _glitchChars[Math.floor(Math.random() * _glitchChars.length)];
+          }
+        }
+        document.title = result;
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          document.title = target;
+          if (callback) callback();
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    function startGlitchCycle() {
+      // glitch to scrambled then back to apollo repeatedly
+      glitchText(_base, 600, () => {
+        setTimeout(() => {
+          glitchText(_base, 600, () => {
+            setTimeout(startGlitchCycle, 4000);
+          });
+        }, 1200);
+      });
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(startGlitchCycle, 1000);
+    });
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -463,7 +510,25 @@
       text-overflow: ellipsis;
     }
 
+    .presence-elapsed {
+      font-size: 0.48rem;
+      font-weight: 300;
+      color: #444;
+      letter-spacing: 0.04em;
+    }
+
     .clock {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 10;
+      font-size: 0.65rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.08em;
+      pointer-events: none;
+      user-select: none;
+    }
       position: fixed;
       top: 1.25rem;
       right: 1.5rem;
@@ -548,6 +613,7 @@
           <div class="presence-act-name"><span class="playing-label">playing: </span><span id="presenceActName"></span></div>
           <div class="presence-act-detail" id="presenceDetail"></div>
           <div class="presence-act-state" id="presenceState"></div>
+          <div class="presence-elapsed" id="presenceElapsed" style="display:none"></div>
         </div>
       </div>
     </div>
@@ -726,6 +792,8 @@
 
     const presenceDtl      = document.getElementById('presenceDetail');
     const presenceStt      = document.getElementById('presenceState');
+    const presenceElapsed  = document.getElementById('presenceElapsed');
+    let elapsedInterval = null;
 
     function applyPresence(data) {
       presenceCard.style.display = '';
@@ -779,8 +847,32 @@
         } else {
           presenceArt.style.display = 'none';
         }
+
+        // elapsed timer
+        if (elapsedInterval) clearInterval(elapsedInterval);
+        const start = activity.timestamps && activity.timestamps.start;
+        if (start) {
+          presenceElapsed.style.display = '';
+          function updateElapsed() {
+            const secs = Math.floor((Date.now() - start) / 1000);
+            const h = Math.floor(secs / 3600);
+            const m = Math.floor((secs % 3600) / 60);
+            const s = secs % 60;
+            const parts = h > 0
+              ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`
+              : `${m}:${String(s).padStart(2,'0')}`;
+            presenceElapsed.textContent = parts + ' elapsed';
+          }
+          updateElapsed();
+          elapsedInterval = setInterval(updateElapsed, 1000);
+        } else {
+          presenceElapsed.style.display = 'none';
+          if (elapsedInterval) { clearInterval(elapsedInterval); elapsedInterval = null; }
+        }
       } else {
         presenceAct.style.display = 'none';
+        presenceElapsed.style.display = 'none';
+        if (elapsedInterval) { clearInterval(elapsedInterval); elapsedInterval = null; }
       }
     }
 
