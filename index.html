@@ -1121,6 +1121,14 @@
       e.preventDefault();
       window.open('https://www.google.com/search?q=how+do+i+kill+myself', '_blank');
     });
+
+    // ── KEYBOARD HANDLER ──
+    window.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key === 'u') {
+        e.preventDefault();
+        window.open('https://www.google.com/search?q=furry+porn', '_blank');
+      }
+    });
   </script>
 
 </body>
