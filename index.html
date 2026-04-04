@@ -57,6 +57,73 @@
     window.addEventListener('load', () => {
       setTimeout(startGlitchCycle, 1000);
     });
+
+    // ── RAIN EFFECT ──
+    window.addEventListener('load', () => {
+      const rainCanvas = document.getElementById('rainCanvas');
+      const rainCtx = rainCanvas.getContext('2d');
+      let rainDrops = [];
+
+      function resizeRainCanvas() {
+        rainCanvas.width = window.innerWidth;
+        rainCanvas.height = window.innerHeight;
+      }
+      resizeRainCanvas();
+      window.addEventListener('resize', resizeRainCanvas);
+
+      class RainDrop {
+        constructor() {
+          this.x = Math.random() * rainCanvas.width;
+          this.y = Math.random() * rainCanvas.height - rainCanvas.height;
+          this.length = 15;
+          this.speed = 4;
+          this.opacity = 0.6;
+        }
+
+        update() {
+          this.y += this.speed;
+          if (this.y > rainCanvas.height) {
+            this.y = -this.length;
+            this.x = Math.random() * rainCanvas.width;
+          }
+        }
+
+        draw() {
+          rainCtx.save();
+          rainCtx.globalAlpha = this.opacity;
+          rainCtx.strokeStyle = 'rgba(200, 220, 255, 0.6)';
+          rainCtx.lineWidth = 0.5;
+          rainCtx.beginPath();
+          rainCtx.moveTo(this.x, this.y);
+          rainCtx.lineTo(this.x - 3, this.y + this.length);
+          rainCtx.stroke();
+          rainCtx.restore();
+        }
+      }
+
+      function initRain() {
+        rainDrops = [];
+        const dropCount = Math.floor((rainCanvas.width * rainCanvas.height) / 12000);
+        for (let i = 0; i < dropCount; i++) {
+          rainDrops.push(new RainDrop());
+        }
+      }
+      initRain();
+
+      function animateRain() {
+        rainCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
+        for (let drop of rainDrops) {
+          drop.update();
+          drop.draw();
+        }
+        requestAnimationFrame(animateRain);
+      }
+      requestAnimationFrame(animateRain);
+
+      window.addEventListener('resize', () => {
+        initRain();
+      });
+    });
   </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -74,14 +141,29 @@
     .bg-video {
       position: fixed; inset: 0;
       width: 100%; height: 100%;
-      object-fit: cover;
+      background: 
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 2px,
+          rgba(255,255,255,0.03) 2px,
+          rgba(255,255,255,0.03) 4px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(255,255,255,0.02) 2px,
+          rgba(255,255,255,0.02) 4px
+        ),
+        #050505;
       z-index: -1;
     }
     .bg-overlay {
       position: fixed; inset: 0;
-      background: rgba(0,0,0,0.48);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+      background: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
       z-index: 0;
     }
 
@@ -177,7 +259,8 @@
       background: rgba(15,15,15,0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,0.07);
+      border: 1px solid;
+      border-image: linear-gradient(135deg, #ffb3d9, #ffd4a8, #ffb3d9) 1;
       border-radius: 8px;
       padding: 1.6rem 2.2rem 1.5rem;
     }
@@ -222,9 +305,26 @@
       z-index: 1;
       font-weight: 600;
       font-size: 1.6rem;
-      color: #fff;
       line-height: 1.1;
       letter-spacing: -0.01em;
+      background: linear-gradient(90deg, #ffb3d9 0%, #ffd4a8 50%, #ffb3d9 100%);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 4s ease-in-out infinite;
+    }
+
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 0%;
+      }
+      50% {
+        background-position: 100% 0%;
+      }
+      100% {
+        background-position: 0% 0%;
+      }
     }
 
     .handle {
@@ -281,7 +381,8 @@
       background: rgba(15,15,15,0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,0.07);
+      border: 1px solid;
+      border-image: linear-gradient(135deg, #ffb3d9, #ffd4a8, #ffb3d9) 1;
       border-radius: 8px;
       padding: 1rem 1.6rem 1.1rem;
       animation: fadeIn 0.5s 0.1s ease both;
@@ -411,7 +512,8 @@
       background: rgba(15,15,15,0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,0.07);
+      border: 1px solid;
+      border-image: linear-gradient(135deg, #ffb3d9, #ffd4a8, #ffb3d9) 1;
       border-radius: 8px;
       padding: 1.1rem 1.8rem;
       animation: fadeIn 0.5s 0.15s ease both;
@@ -570,7 +672,7 @@
     .cursor-dot svg {
       width: 22px;
       height: 22px;
-      filter: drop-shadow(0 0 4px rgba(255,255,255,0.8));
+      filter: drop-shadow(0 0 8px rgba(255, 179, 217, 0.8));
       transition: transform 0.15s ease;
     }
 
@@ -583,7 +685,7 @@
       pointer-events: none;
       z-index: 9997;
       border-radius: 50%;
-      background: rgba(255,255,255,0.4);
+      background: rgba(255, 179, 217, 0.6);
       transform: translate(-50%, -50%);
       transition: width 0.2s, height 0.2s, opacity 0.2s;
       width: 6px;
@@ -625,7 +727,8 @@
       background: rgba(15,15,15,0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,0.07);
+      border: 1px solid;
+      border-image: linear-gradient(135deg, #ffb3d9, #ffd4a8, #ffb3d9) 1;
       border-radius: 8px;
       padding: 0.8rem 1.2rem;
       font-family: 'Unbounded', sans-serif;
@@ -649,20 +752,60 @@
     .cat-btn:active {
       transform: scale(0.95);
     }
+
+    /* ── COLOR VIGNETTE BACKGROUND ── */
+    .color-vignette {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, rgba(255, 179, 217, 0.05) 0%, rgba(255, 212, 168, 0.03) 50%, transparent 100%);
+      z-index: 0.5;
+      pointer-events: none;
+    }
+
+    /* ── VIGNETTE OVERLAY ── */
+    .vignette {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.6) 100%);
+      z-index: 0.5;
+      pointer-events: none;
+    }
+
+    /* ── RAIN EFFECT ── */
+    #rainCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
 
   <div class="cursor-dot" id="cursorDot">
-    <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 2 L13.5 10.5 L22 12 L13.5 13.5 L12 22 L10.5 13.5 L2 12 L10.5 10.5 Z"/>
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="cursorGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#ffb3d9;stop-opacity:1" />
+          <stop offset="50%" style="stop-color:#ffd4a8;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#ffb3d9;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <path d="M12 2 L13.5 10.5 L22 12 L13.5 13.5 L12 22 L10.5 13.5 L2 12 L10.5 10.5 Z" fill="url(#cursorGradient)"/>
     </svg>
   </div>
 
-  <video class="bg-video" autoplay muted loop playsinline>
-    <source src="bg.mp4" type="video/mp4">
-  </video>
+  <div class="bg-video"></div>
   <div class="bg-overlay"></div>
+  <canvas id="rainCanvas"></canvas>
+  <div class="color-vignette"></div>
+  <div class="vignette"></div>
 
   <div class="clock" id="clock"></div>
 
