@@ -58,72 +58,7 @@
       setTimeout(startGlitchCycle, 1000);
     });
 
-    // ── RAIN EFFECT ──
-    window.addEventListener('load', () => {
-      const rainCanvas = document.getElementById('rainCanvas');
-      const rainCtx = rainCanvas.getContext('2d');
-      let rainDrops = [];
-
-      function resizeRainCanvas() {
-        rainCanvas.width = window.innerWidth;
-        rainCanvas.height = window.innerHeight;
-      }
-      resizeRainCanvas();
-      window.addEventListener('resize', resizeRainCanvas);
-
-      class RainDrop {
-        constructor() {
-          this.x = Math.random() * rainCanvas.width;
-          this.y = Math.random() * rainCanvas.height - rainCanvas.height;
-          this.length = 15;
-          this.speed = 4;
-          this.opacity = 0.4;
-        }
-
-        update() {
-          this.y += this.speed;
-          if (this.y > rainCanvas.height) {
-            this.y = -this.length;
-            this.x = Math.random() * rainCanvas.width;
-          }
-        }
-
-        draw() {
-          rainCtx.save();
-          rainCtx.globalAlpha = this.opacity;
-          rainCtx.strokeStyle = 'rgba(255, 179, 217, 0.4)';
-          rainCtx.lineWidth = 0.5;
-          rainCtx.beginPath();
-          rainCtx.moveTo(this.x, this.y);
-          rainCtx.lineTo(this.x - 3, this.y + this.length);
-          rainCtx.stroke();
-          rainCtx.restore();
-        }
-      }
-
-      function initRain() {
-        rainDrops = [];
-        const dropCount = Math.floor((rainCanvas.width * rainCanvas.height) / 12000);
-        for (let i = 0; i < dropCount; i++) {
-          rainDrops.push(new RainDrop());
-        }
-      }
-      initRain();
-
-      function animateRain() {
-        rainCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
-        for (let drop of rainDrops) {
-          drop.update();
-          drop.draw();
-        }
-        requestAnimationFrame(animateRain);
-      }
-      requestAnimationFrame(animateRain);
-
-      window.addEventListener('resize', () => {
-        initRain();
-      });
-    });
+    // ── CUSTOM CURSOR ──
   </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -237,8 +172,51 @@
       width: 100px; height: 100px;
       object-fit: cover;
       flex-shrink: 0;
-      border: 1px solid rgba(255, 179, 217, 0.3);
       border-radius: 3px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .avatar-wrap {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+    }
+
+    .avatar-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 5px;
+      background: linear-gradient(90deg, #ffb3d9, #ffd4a8, #ffb3d9, #ffd4a8);
+      background-size: 300% 100%;
+      animation: gradientRotate 3s linear infinite;
+      z-index: 0;
+    }
+
+    .avatar-wrap::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 5px;
+      background: linear-gradient(90deg, #ffb3d9, #ffd4a8, #ffb3d9, #ffd4a8);
+      background-size: 300% 100%;
+      animation: gradientRotate 3s linear infinite;
+      z-index: -1;
+      filter: blur(8px);
+      opacity: 0.6;
+      animation: gradientRotate 3s linear infinite, pulseGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes gradientRotate {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+
+    @keyframes pulseGlow {
+      0% { opacity: 0.4; filter: blur(8px); }
+      100% { opacity: 0.8; filter: blur(12px); }
     }
 
     .info { display: flex; flex-direction: column; gap: 0.25rem; }
@@ -737,16 +715,6 @@
       z-index: 0.5;
       pointer-events: none;
     }
-
-    /* ── RAIN EFFECT ── */
-    #rainCanvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
   </style>
 </head>
 <body>
@@ -766,7 +734,6 @@
 
   <div class="bg-video"></div>
   <div class="bg-overlay"></div>
-  <canvas id="rainCanvas"></canvas>
   <div class="color-vignette"></div>
   <div class="vignette"></div>
 
@@ -782,7 +749,9 @@
 
     <div class="card">
       <div class="top-row">
-        <img class="avatar" src="avatar.jpg" alt="apollo" />
+        <div class="avatar-wrap">
+          <img class="avatar" src="avatar.jpg" alt="artemis" />
+        </div>
         <div class="info">
           <div class="name-wrap">
             <div class="name" id="nameEl">artemis</div>
