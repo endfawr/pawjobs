@@ -10,7 +10,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>artemis</title>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600&display=swap" rel="stylesheet">
   <script>
     const _base = 'artemis';
@@ -641,8 +641,18 @@
       font-weight: 400;
       color: rgba(90, 74, 80, 0.6);
       letter-spacing: 0.08em;
-      pointer-events: none;
+      pointer-events: auto;
       user-select: none;
+    }
+
+    .clock a {
+      color: rgba(90, 74, 80, 0.6);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .clock a:hover {
+      color: rgba(90, 74, 80, 0.9);
     }
 
     .watermark {
@@ -980,9 +990,9 @@
       const h = String(now.getHours()).padStart(2, '0');
       const m = String(now.getMinutes()).padStart(2, '0');
       const s = String(now.getSeconds()).padStart(2, '0');
-      clockEl.textContent = _spotifyText
-        ? `pawjobs.me | ${h}:${m}:${s} | ${_spotifyText}`
-        : `pawjobs.me | ${h}:${m}:${s}`;
+      clockEl.innerHTML = _spotifyText
+        ? `<a href="https://pawjobs.me/">pawjobs.me</a> | ${h}:${m}:${s} | ${_spotifyText}`
+        : `<a href="https://pawjobs.me/">pawjobs.me</a> | ${h}:${m}:${s}`;
     }
     updateClock();
     setInterval(updateClock, 1000);
