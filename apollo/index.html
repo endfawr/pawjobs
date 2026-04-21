@@ -79,20 +79,20 @@
     .bg-video {
       position: fixed; inset: 0;
       width: 100%; height: 100%;
-      background: 
+      background:
         repeating-linear-gradient(
           90deg,
           transparent,
-          transparent 2px,
-          rgba(255,255,255,0.03) 2px,
-          rgba(255,255,255,0.03) 4px
+          transparent 50px,
+          rgba(255,255,255,0.03) 50px,
+          rgba(255,255,255,0.03) 52px
         ),
         repeating-linear-gradient(
           0deg,
           transparent,
-          transparent 2px,
-          rgba(255,255,255,0.02) 2px,
-          rgba(255,255,255,0.02) 4px
+          transparent 50px,
+          rgba(255,255,255,0.02) 50px,
+          rgba(255,255,255,0.02) 52px
         ),
         #050505;
       z-index: -1;
@@ -162,7 +162,7 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid;
-      border-image: linear-gradient(135deg, #8ABFDE, #BBDE8A, #DE988A) 1;
+      border-image: linear-gradient(135deg, #1e3a5f, #5c8ab5, #1e3a5f) 1;
       border-radius: 8px;
       padding: 1.6rem 2.2rem 1.5rem;
     }
@@ -195,7 +195,7 @@
       position: absolute;
       inset: -3px;
       border-radius: 5px;
-      background: linear-gradient(90deg, #8ABFDE, #BBDE8A, #DE988A, #8ABFDE);
+      background: linear-gradient(90deg, #1e3a5f, #5c8ab5, #1e3a5f, #1e3a5f);
       background-size: 300% 100%;
       animation: gradientRotate 3s linear infinite;
       z-index: 0;
@@ -206,7 +206,7 @@
       position: absolute;
       inset: -3px;
       border-radius: 5px;
-      background: linear-gradient(90deg, #8ABFDE, #BBDE8A, #DE988A, #8ABFDE);
+      background: linear-gradient(90deg, #1e3a5f, #5c8ab5, #1e3a5f, #1e3a5f);
       background-size: 300% 100%;
       animation: gradientRotate 3s linear infinite;
       z-index: -1;
@@ -252,7 +252,7 @@
       font-size: 1.6rem;
       line-height: 1.1;
       letter-spacing: -0.01em;
-      background: linear-gradient(90deg, #8ABFDE 0%, #BBDE8A 50%, #8ABFDE 100%);
+      background: linear-gradient(90deg, #1e3a5f 0%, #5c8ab5 50%, #1e3a5f 100%);
       background-size: 200% 100%;
       -webkit-background-clip: text;
       background-clip: text;
@@ -282,6 +282,7 @@
     .divider {
       border: none;
       border-top: 1px solid rgba(255,255,255,0.06);
+      margin-top: 1.2rem;
       margin-bottom: 1.2rem;
     }
 
@@ -327,7 +328,7 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid;
-      border-image: linear-gradient(135deg, #8ABFDE, #BBDE8A, #DE988A) 1;
+      border-image: linear-gradient(135deg, #1e3a5f, #5c8ab5, #1e3a5f) 1;
       border-radius: 8px;
       padding: 1rem 1.6rem 1.1rem;
       animation: fadeIn 0.5s 0.1s ease both;
@@ -458,7 +459,7 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid;
-      border-image: linear-gradient(135deg, #8ABFDE, #BBDE8A, #DE988A) 1;
+      border-image: linear-gradient(135deg, #1e3a5f, #5c8ab5, #1e3a5f) 1;
       border-radius: 8px;
       padding: 1.1rem 1.8rem;
       animation: fadeIn 0.5s 0.15s ease both;
@@ -624,7 +625,7 @@
     .cursor-dot svg {
       width: 22px;
       height: 22px;
-      filter: drop-shadow(0 0 8px rgba(138, 191, 222, 0.8));
+      filter: drop-shadow(0 0 8px rgba(30, 58, 95, 0.8));
       transition: transform 0.15s ease;
     }
 
@@ -637,7 +638,7 @@
       pointer-events: none;
       z-index: 9997;
       border-radius: 50%;
-      background: rgba(138, 191, 222, 0.6);
+      background: rgba(30, 58, 95, 0.6);
       transform: translate(-50%, -50%);
       transition: width 0.2s, height 0.2s, opacity 0.2s;
       width: 6px;
@@ -690,7 +691,7 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid;
-      border-image: linear-gradient(135deg, #8ABFDE, #BBDE8A, #DE988A) 1;
+      border-image: linear-gradient(135deg, #1e3a5f, #5c8ab5, #1e3a5f) 1;
       border-radius: 8px;
       padding: 0.8rem 1.2rem;
       font-family: 'Unbounded', sans-serif;
@@ -721,7 +722,7 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(ellipse at center, rgba(138, 191, 222, 0.05) 0%, rgba(187, 222, 138, 0.03) 50%, transparent 100%);
+      background: radial-gradient(ellipse at center, rgba(30, 58, 95, 0.08) 0%, rgba(92, 138, 181, 0.05) 50%, transparent 100%);
       z-index: 0.5;
       pointer-events: none;
     }
@@ -735,6 +736,18 @@
       background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.6) 100%);
       z-index: 0.5;
       pointer-events: none;
+      animation: vignetteBreathe 4s ease-in-out infinite;
+    }
+
+    @keyframes vignetteBreathe {
+      0%, 100% {
+        opacity: 0.8;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
     }
   </style>
 </head>
@@ -744,9 +757,9 @@
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="cursorGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#8ABFDE;stop-opacity:1" />
-          <stop offset="50%" style="stop-color:#BBDE8A;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#DE988A;stop-opacity:1" />
+          <stop offset="0%" style="stop-color:#1e3a5f;stop-opacity:1" />
+          <stop offset="50%" style="stop-color:#5c8ab5;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#1e3a5f;stop-opacity:1" />
         </linearGradient>
       </defs>
       <path d="M12 2 L13.5 10.5 L22 12 L13.5 13.5 L12 22 L10.5 13.5 L2 12 L10.5 10.5 Z" fill="url(#cursorGradient)"/>
@@ -841,8 +854,8 @@
     <div class="player-card">
       <!-- song title row -->
       <div class="player-title-row">
-        <span class="player-song">In Love - datealyfe, Sayako</span>
-        <a class="spotify-link" href="https://open.spotify.com/track/19pkaHfjPBSh3Ox5ce9aDD?si=308cffed46ff4b8a" target="_blank" rel="noopener" title="Open in Spotify">
+        <span class="player-song">Under The Same Name - Whirr</span>
+        <a class="spotify-link" href="https://open.spotify.com/track/1lw2DlwxjAEWLMD7E1hnxD?si=182251d9ea9c4d45" target="_blank" rel="noopener" title="Open in Spotify">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
         </a>
       </div>
@@ -923,7 +936,7 @@
       if (audio.duration) audio.currentTime = pct * audio.duration;
     }
 
-    setVolume(0.05);
+    setVolume(0.15);
 
     enterScreen.addEventListener('click', () => {
       enterScreen.classList.add('hidden');
@@ -976,7 +989,7 @@
     // ── MAIL COPY ──
     document.getElementById('mailBtn').addEventListener('click', (e) => {
       e.preventDefault();
-      navigator.clipboard.writeText('apollo@velocity.dog').then(() => {
+      navigator.clipboard.writeText('jay@drug.rest').then(() => {
         const btn = document.getElementById('mailBtn');
         const prev = btn.getAttribute('title');
         btn.setAttribute('title', 'copied!');
@@ -1241,7 +1254,7 @@
     function drawStar(x, y, size, alpha) {
       ctx.save();
       ctx.globalAlpha = alpha;
-      ctx.strokeStyle = '#ffb6c1';
+      ctx.strokeStyle = '#5c8ab5';
       ctx.lineWidth = 0.7;
       ctx.translate(x, y);
       for (let i = 0; i < 4; i++) {
@@ -1269,7 +1282,7 @@
         } else {
           ctx.save();
           ctx.globalAlpha = p.alpha;
-          ctx.fillStyle = '#ffb6c1';
+          ctx.fillStyle = '#5c8ab5';
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size * 0.55, 0, Math.PI * 2);
           ctx.fill();
