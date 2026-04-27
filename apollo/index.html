@@ -1107,7 +1107,8 @@
       const h = String(now.getHours()).padStart(2, '0');
       const m = String(now.getMinutes()).padStart(2, '0');
       const s = String(now.getSeconds()).padStart(2, '0');
-      clockEl.innerHTML = _spotifyText
+      const isMobile = window.innerWidth <= 480;
+      clockEl.innerHTML = _spotifyText && !isMobile
         ? `<a href="https://pawjobs.me/">pawjobs.me</a> | ${h}:${m}:${s} | ${_spotifyText}`
         : `<a href="https://pawjobs.me/">pawjobs.me</a> | ${h}:${m}:${s}`;
     }
